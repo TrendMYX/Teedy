@@ -1,1 +1,2 @@
-update T_CONFIG set CFG_VALUE_C = 'RAM' where CFG_ID_C = 'LUCENE_DIRECTORY_STORAGE';
+update T_CONFIG set CFG_VALUE_C = 'FILE' where CFG_ID_C = 'LUCENE_DIRECTORY_STORAGE';
+update T_CONFIG set CFG_VALUE_C = 'true' where CFG_ID_C = 'GUEST_LOGIN';
