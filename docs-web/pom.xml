@@ -143,6 +143,29 @@
         <directory>src/main/resources</directory>
       </resource>
     </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>stage-site-under-parent</id>
+            <phase>site</phase>
+            <configuration>
+              <target>
+                <mkdir dir="${project.basedir}/../target/site/${project.artifactId}"/>
+                <copy todir="${project.basedir}/../target/site/${project.artifactId}">
+                  <fileset dir="${project.build.directory}/site"/>
+                </copy>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 
   <profiles>
@@ -185,7 +208,7 @@
                 <docs.home>../data/docs</docs.home>
               </systemProperties>
               <webApp>
-                <contextPath>/docs-web</contextPath>
+                <contextPath>/</contextPath>
                 <overrideDescriptor>${project.basedir}/src/dev/main/webapp/web-override.xml</overrideDescriptor>
               </webApp>
             </configuration>
@@ -272,4 +295,21 @@
       </build>
     </profile>
   </profiles>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${org.apache.maven.plugins.maven-project-info-reports-plugin.version}</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>index</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>

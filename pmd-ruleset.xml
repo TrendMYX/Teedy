@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Practice7 PMD Ruleset"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.github.io/schema/ruleset_2_0_0.xsd">
+  <description>
+    Custom PMD ruleset for Practice 7. It keeps only rules that match or are closely related
+    to the lecture metrics: LoC, CC, WMC, CBO, and LCOM.
+  </description>
+
+  <!-- LoC: PMD exposes NCSS as the closest built-in size metric. -->
+  <rule ref="category/java/design.xml/NcssCount"/>
+
+  <!-- CC: direct mapping for cyclomatic complexity. -->
+  <rule ref="category/java/design.xml/CyclomaticComplexity"/>
+
+  <!-- CBO: direct mapping for coupling between objects. -->
+  <rule ref="category/java/design.xml/CouplingBetweenObjects"/>
+
+  <!-- WMC / LCOM: GodClass is driven by WMC and TCC (inverse cohesion signal). -->
+  <rule ref="category/java/design.xml/GodClass"/>
+</ruleset>

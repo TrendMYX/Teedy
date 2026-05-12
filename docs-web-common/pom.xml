@@ -83,6 +83,13 @@
     </dependency>
 
     <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>5.9.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.glassfish.jersey.test-framework.providers</groupId>
       <artifactId>jersey-test-framework-provider-external</artifactId>
       <scope>test</scope>
@@ -119,9 +126,56 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>${org.apache.maven.plugins.maven-install-plugin.version}</version>
         <executions>
           <execution>
+            <id>install-artifact-for-site</id>
+            <phase>site</phase>
+            <goals>
+              <goal>install</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>stage-site-under-parent</id>
+            <phase>site</phase>
+            <configuration>
+              <target>
+                <mkdir dir="${project.basedir}/../target/site/${project.artifactId}"/>
+                <copy todir="${project.basedir}/../target/site/${project.artifactId}">
+                  <fileset dir="${project.build.directory}/site"/>
+                </copy>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${org.apache.maven.plugins.maven-jar-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>package-jar-for-site</id>
+            <phase>pre-site</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>attach-test-jar</id>
+            <phase>pre-site</phase>
             <goals>
               <goal>test-jar</goal>
             </goals>
@@ -130,4 +184,21 @@
       </plugin>
     </plugins>
   </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${org.apache.maven.plugins.maven-project-info-reports-plugin.version}</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>index</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
