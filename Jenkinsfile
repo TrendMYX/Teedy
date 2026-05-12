@@ -20,6 +20,12 @@ pipeline {
       }
     }
 
+    stage('Install Local Artifacts') {
+      steps {
+        sh 'mvn --batch-mode install -DskipTests'
+      }
+    }
+
     stage('PMD') {
       steps {
         sh 'mvn --batch-mode pmd:pmd'
