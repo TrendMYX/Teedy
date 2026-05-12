@@ -175,7 +175,7 @@
           </execution>
           <execution>
             <id>attach-test-jar</id>
-            <phase>pre-site</phase>
+            <phase>package</phase>
             <goals>
               <goal>test-jar</goal>
             </goals>

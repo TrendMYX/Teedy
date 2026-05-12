@@ -4,49 +4,55 @@ pipeline {
   stages {
     stage('Clean') {
       steps {
-        sh 'mvn --batch-mode clean'
+        sh 'mvn --batch-mode -Ddocs.home="$WORKSPACE/data/docs" clean'
+      }
+    }
+
+    stage('Prepare Test Storage') {
+      steps {
+        sh 'rm -rf "$WORKSPACE/data/docs" && mkdir -p "$WORKSPACE/data/docs/storage"'
       }
     }
 
     stage('Compile') {
       steps {
-        sh 'mvn --batch-mode compile'
+        sh 'mvn --batch-mode -Ddocs.home="$WORKSPACE/data/docs" compile'
       }
     }
 
     stage('Test') {
       steps {
-        sh 'mvn --batch-mode test -Dmaven.test.failure.ignore=true'
+        sh 'mvn --batch-mode -Ddocs.home="$WORKSPACE/data/docs" test -Dmaven.test.failure.ignore=true'
       }
     }
 
     stage('Install Local Artifacts') {
       steps {
-        sh 'mvn --batch-mode install -DskipTests'
+        sh 'mvn --batch-mode -Ddocs.home="$WORKSPACE/data/docs" install -DskipTests'
       }
     }
 
     stage('PMD') {
       steps {
-        sh 'mvn --batch-mode pmd:pmd'
+        sh 'mvn --batch-mode -Ddocs.home="$WORKSPACE/data/docs" pmd:pmd'
       }
     }
 
     stage('JaCoCo') {
       steps {
-        sh 'mvn --batch-mode jacoco:report'
+        sh 'mvn --batch-mode -Ddocs.home="$WORKSPACE/data/docs" jacoco:report'
       }
     }
 
     stage('Site') {
       steps {
-        sh 'mvn --batch-mode site'
+        sh 'mvn --batch-mode -Ddocs.home="$WORKSPACE/data/docs" site'
       }
     }
 
     stage('Package') {
       steps {
-        sh 'mvn --batch-mode package -DskipTests'
+        sh 'mvn --batch-mode -Ddocs.home="$WORKSPACE/data/docs" package -DskipTests'
       }
     }
   }
